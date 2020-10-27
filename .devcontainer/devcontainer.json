@@ -1,0 +1,26 @@
+{
+  "name": "arch-install-script",
+  "dockerFile": "Dockerfile",
+  "extensions": [
+    "timonwong.shellcheck",
+    "jetmartin.bats",
+    "foxundermoon.shell-format",
+    "mads-hartmann.bash-ide-vscode"
+  ],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "shellformat.effectLanguages": [
+      "shellscript",
+      "dotenv"
+    ],
+    "shellformat.flag": "-i 2 -ln bash -bn",
+    "shellformat.path": "/usr/local/bin/shfmt"
+  },
+  "remoteUser": "dev",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=${env:HOME}${env:USERPROFILE}/.ssh,target=/home/dev/.ssh,type=bind,consistency=cached",
+    "source=${env:HOME}${env:USERPROFILE}/.gitconfig,target=/home/dev/.gitconfig,type=bind,consistency=cached"
+  ],
+}
