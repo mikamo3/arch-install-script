@@ -86,7 +86,7 @@ mount_partition() {
 install_base_package() {
   echo "install base package"
   timedatectl set-ntp true
-  pacstrap /mnt base linux linux-firmware openssh ${UCODE}-ucode btrfs-progs networkmanager sudo
+  pacstrap /mnt base linux linux-firmware openssh ${UCODE}-ucode btrfs-progs networkmanager sudo ansible
 }
 
 create_fstab() {
@@ -95,6 +95,7 @@ create_fstab() {
 }
 
 set_root_password() {
+  echo "set root password"
   arch-chroot /mnt passwd
 }
 
@@ -114,7 +115,9 @@ set_locale() {
 
 create_users() {
   # for exec ansible
-  arch-chroot /mnt useradd -s /sbin/nologin -u 2000 ansible
+  arch-chroot /mnt useradd -m -u 2000 -s /bin/bash ansible
+  arch-chroot /mnt usermod -aG wheel ansible
+  echo "set ansible password"
   arch-chroot /mnt passwd ansible
   echo "ansible   ALL=(ALL) ALL" >> /mnt/etc/sudoers
 }
