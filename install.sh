@@ -130,7 +130,7 @@ set_bootloader() {
 title   Arch Linux
 linux   /vmlinuz-linux${KERNEL_SUFFIX}
 initrd  /${UCODE}-ucode.img
-initrd  /initramfs-linux{KERNEL_SUFFIX}.img
+initrd  /initramfs-linux${KERNEL_SUFFIX}.img
 options root=PARTLABEL=arch rootflags=subvol=@ rw
 EOF
   cat <<EOF >/mnt/boot/loader/loader.conf
