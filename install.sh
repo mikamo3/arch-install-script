@@ -12,7 +12,8 @@ ROOT_PARTITION_SIZE=
 TIMEZONE="Asia/Tokyo"
 LOCALES=("en_US.UTF-8 UTF-8" "ja_JP.UTF-8 UTF-8")
 LOCALE_LANG="ja_JP.UTF-8 UTF-8"
-UCODE="intel"
+UCODE="amd"
+KERNEL_SUFFIX="-zen"
 create_partition() {
   echo "Partition Layout"
   read -n1 -r -p "do you want to create boot partition? (y/N): " ENABLE_MAKE_BOOT_PARTITION
@@ -86,7 +87,7 @@ mount_partition() {
 install_base_package() {
   echo "install base package"
   timedatectl set-ntp true
-  pacstrap /mnt base linux linux-firmware openssh ${UCODE}-ucode btrfs-progs networkmanager sudo ansible
+  pacstrap /mnt base linux${KERNEL_SUFFIX} linux${KERNEL_SUFFIX}-headers linux-firmware openssh ${UCODE}-ucode btrfs-progs networkmanager sudo ansible
 }
 
 create_fstab() {
@@ -127,9 +128,9 @@ set_bootloader() {
   arch-chroot /mnt bootctl install
   cat <<EOF > /mnt/boot/loader/entries/arch.conf
 title   Arch Linux
-linux   /vmlinuz-linux
+linux   /vmlinuz-linux${KERNEL_SUFFIX}
 initrd  /${UCODE}-ucode.img
-initrd  /initramfs-linux.img
+initrd  /initramfs-linux{KERNEL_SUFFIX}.img
 options root=PARTLABEL=arch rootflags=subvol=@ rw
 EOF
   cat <<EOF >/mnt/boot/loader/loader.conf
